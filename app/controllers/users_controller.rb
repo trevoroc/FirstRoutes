@@ -5,12 +5,12 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
-    if user.save
-      render json: user
+    @user = User.new(user_params)
+    if @user.save
+      render json: @user
     else
       render(
-        json: user.errors.full_messages, status: :unprocessable_entity
+        json: @user.errors.full_messages, status: :unprocessable_entity
       )
     end
   end
@@ -19,16 +19,16 @@ class UsersController < ApplicationController
     begin
       render json: User.find(params[:id])
     rescue
-      render text: 'OUR ERROR MESSAGE', status: 404
+      render text: 'User not found', status: 404
     end
   end
 
 
   def update
     begin
-      user = User.find(params[:id])
-      user.update(user_params)
-      render json: user
+      @user = User.find(params[:id])
+      @user.update(user_params)
+      render json: @user
     rescue
       render text: 'User not found', status: 404
     end
@@ -37,8 +37,8 @@ class UsersController < ApplicationController
 
   def destroy
     begin
-      user = User.find(params[:id])
-      user.destroy
+      @user = User.find(params[:id])
+      @user.destroy
       render text: "User deleted"
     rescue
       render text: 'User not found', status: 404
